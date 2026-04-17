@@ -1,0 +1,66 @@
+@if (request(); as r) {
+
+  <h2>{{ r.title }}</h2>
+  <p>Status: <b>{{ r.status }}</b></p>
+
+  <button (click)="startMatching()">
+    Запустить подбор
+  </button>
+
+  <h3>Предложения</h3>
+
+  @if (loading()) {
+    <mat-spinner></mat-spinner>
+  }
+
+  @if (!loading() && offers().length === 0) {
+    <p>Нет предложений</p>
+  }
+
+  @if (offers().length > 0) {
+
+    <table mat-table [dataSource]="offers()" class="mat-elevation-z8">
+
+      <!-- Supplier -->
+      <ng-container matColumnDef="supplierName">
+        <th mat-header-cell *matHeaderCellDef>Поставщик</th>
+        <td mat-cell *matCellDef="let o">
+          {{ o.supplierName }}
+        </td>
+      </ng-container>
+
+      <!-- Product -->
+      <ng-container matColumnDef="productName">
+        <th mat-header-cell *matHeaderCellDef>Продукт</th>
+        <td mat-cell *matCellDef="let o">
+          {{ o.productName }}
+        </td>
+      </ng-container>
+
+      <!-- Price -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Цена</th>
+        <td mat-cell *matCellDef="let o">
+          {{ o.price | number }}
+        </td>
+      </ng-container>
+
+      <!-- Specifications -->
+      <ng-container matColumnDef="specifications">
+        <th mat-header-cell *matHeaderCellDef>Характеристики</th>
+        <td mat-cell *matCellDef="let o">
+          @for (s of o.specifications; track s.name) {
+            <div>
+              {{ s.name }}: {{ s.value }}
+            </div>
+          }
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+  }
+
+}

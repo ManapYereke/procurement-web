@@ -1,0 +1,77 @@
+<h2>Создание заявки</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+
+  <!-- TITLE -->
+  <div>
+    <label for="title">Название</label>
+    <input
+      id="title"
+      placeholder="Название"
+      formControlName="title">
+  </div>
+
+  <!-- CATEGORY -->
+  <div>
+    <label for="category">Категория</label>
+    <select id="category" formControlName="category">
+      <option value="laptops">Ноутбук</option>
+      <option value="smartphones">Смартфон</option>
+      <option value="printers">Принтеры</option>
+    </select>
+  </div>
+
+  <!-- MAX PRICE -->
+  <div>
+    <label for="maxPrice">Максимальная цена</label>
+    <input
+      id="maxPrice"
+      placeholder="Максимальная цена"
+      type="number"
+      formControlName="maxPrice">
+  </div>
+
+  <h3>Требования</h3>
+
+  <!-- SPECIFICATIONS -->
+  <div formArrayName="specifications">
+
+    @for (s of specs.controls; track $index) {
+      <div [formGroupName]="$index">
+
+        <!-- SPEC NAME -->
+        <div>
+          <label>Параметр</label>
+          <input formControlName="name" placeholder="RAM, Storage, OS">
+        </div>
+
+        <!-- OPERATOR -->
+        <div>
+          <label>Оператор</label>
+          <select formControlName="operator">
+            <option value="EQ">=</option>
+            <option value="GTE">&gt;=</option>
+            <option value="LTE">&lt;=</option>
+          </select>
+        </div>
+
+        <!-- VALUE -->
+        <div>
+          <label>Значение</label>
+          <input formControlName="value" placeholder="16, 512, Windows">
+        </div>
+
+      </div>
+    }
+
+  </div>
+
+  <button type="button" (click)="addSpec()">
+    Добавить требование
+  </button>
+
+  <button type="submit">
+    Создать
+  </button>
+
+</form>
